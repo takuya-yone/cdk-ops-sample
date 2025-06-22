@@ -1,12 +1,11 @@
 import {
-  RemovalPolicy,
   aws_lambda as lambda,
-  aws_lambda_nodejs as node_lambda,
   aws_logs as logs,
+  aws_lambda_nodejs as node_lambda,
+  RemovalPolicy,
 } from "aws-cdk-lib";
 import type { NodejsFunctionProps } from "aws-cdk-lib/aws-lambda-nodejs";
 import type { Construct } from "constructs";
-import { LogGroup } from "aws-cdk-lib/aws-logs";
 
 /*
  * 不要なプロパティ
@@ -44,7 +43,7 @@ export class CustomNodejsFunction extends node_lambda.NodejsFunction {
       handler: "handler",
       tracing: lambda.Tracing.ACTIVE,
       retryAttempts: 0,
-      logGroup: new LogGroup(scope, `${props.functionName}-logs`, {
+      logGroup: new logs.LogGroup(scope, `${props.functionName}-logs`, {
         logGroupName: `/aws/lambda/${props.functionName}-logs`,
         retention: logs.RetentionDays.ONE_YEAR,
         removalPolicy: RemovalPolicy.DESTROY,

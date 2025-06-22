@@ -1,33 +1,34 @@
 {
-	"name": "cdk-ops-sample",
-	"version": "0.1.0",
-	"bin": {
-		"cdk-ops-sample": "bin/cdk-ops-sample.js"
-	},
-	"scripts": {
-		"build": "tsc",
-		"watch": "tsc -w",
-		"test": "jest",
-		"cdk": "cdk"
-	},
-	"devDependencies": {
-		"@biomejs/biome": "2.0.4",
-		"@types/jest": "^30.0.0",
-		"@types/node": "24.0.3",
-		"aws-cdk": "2.1019.1",
-		"esbuild": "^0.25.5",
-		"jest": "^30.0.2",
-		"ts-jest": "^29.4.0",
-		"ts-node": "^10.9.2",
-		"typescript": "~5.8.3"
-	},
-	"dependencies": {
-		"@aws-cdk/aws-lambda-python-alpha": "2.202.0-alpha.0",
-		"aws-cdk-lib": "2.202.0",
-		"constructs": "^10.4.2"
-	},
-	"engines": {
-		"node": "22.x",
-		"pnpm": ">=10"
-	}
+  "name": "cdk-ops-sample",
+  "version": "0.1.0",
+  "bin": {
+    "cdk-ops-sample": "bin/cdk-ops-sample.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "test": "jest",
+    "cdk": "cdk",
+    "check": "biome check --write ."
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.0.4",
+    "@types/jest": "^30.0.0",
+    "@types/node": "24.0.3",
+    "aws-cdk": "2.1019.1",
+    "esbuild": "^0.25.5",
+    "jest": "^30.0.2",
+    "ts-jest": "^29.4.0",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.8.3"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-lambda-python-alpha": "2.202.0-alpha.0",
+    "aws-cdk-lib": "2.202.0",
+    "constructs": "^10.4.2"
+  },
+  "engines": {
+    "node": "22.x",
+    "pnpm": ">=10"
+  }
 }
