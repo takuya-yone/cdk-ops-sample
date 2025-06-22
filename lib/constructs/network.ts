@@ -1,4 +1,4 @@
-import * as ec2 from "aws-cdk-lib/aws-ec2";
+import { aws_ec2 as ec2 } from "aws-cdk-lib";
 import { Construct } from "constructs";
 
 export class NetworkConstruct extends Construct {
@@ -11,6 +11,12 @@ export class NetworkConstruct extends Construct {
       maxAzs: 2,
       enableDnsSupport: true,
       enableDnsHostnames: true,
+      flowLogs: {
+        rejectLogs: {
+          trafficType: ec2.FlowLogTrafficType.REJECT,
+          maxAggregationInterval: ec2.FlowLogMaxAggregationInterval.ONE_MINUTE,
+        },
+      },
       subnetConfiguration: [
         {
           cidrMask: 24,

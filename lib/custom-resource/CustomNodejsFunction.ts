@@ -1,6 +1,7 @@
 import {
   aws_lambda as lambda,
   aws_logs as logs,
+  // biome-ignore lint/style/noRestrictedImports: for declaration
   aws_lambda_nodejs as node_lambda,
   RemovalPolicy,
 } from "aws-cdk-lib";

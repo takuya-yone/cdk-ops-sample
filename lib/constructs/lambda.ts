@@ -1,5 +1,5 @@
 import * as cdk from "aws-cdk-lib";
-import { aws_iam as iam } from "aws-cdk-lib";
+import { aws_iam as iam, aws_lambda_nodejs as node_lambda } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { CustomNodejsFunction } from "../custom-resource";
 
@@ -22,6 +22,14 @@ export class LambdaConstruct extends Construct {
 
     const _nodeLambda = new CustomNodejsFunction(this, "custom-nodejs-lambda", {
       functionName: "custom-nodejs-lambda",
+      entry: "src/lambda/list-s3.ts",
+      role: lambdaRole,
+      memorySize: 128,
+      timeout: cdk.Duration.seconds(10),
+    });
+
+    const _nodeLambda2 = new node_lambda.NodejsFunction(this, "nodejs-lambda", {
+      functionName: "nodejs-lambda",
       entry: "src/lambda/list-s3.ts",
       role: lambdaRole,
       memorySize: 128,

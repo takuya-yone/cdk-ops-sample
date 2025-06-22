@@ -1,4 +1,5 @@
 import type { PythonFunctionProps } from "@aws-cdk/aws-lambda-python-alpha";
+// biome-ignore lint/style/noRestrictedImports: for declaration
 import { PythonFunction } from "@aws-cdk/aws-lambda-python-alpha";
 import { aws_lambda as lambda } from "aws-cdk-lib";
 import type { Construct } from "constructs";

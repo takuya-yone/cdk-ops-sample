@@ -20,7 +20,8 @@
     "jest": "^30.0.2",
     "ts-jest": "^29.4.0",
     "ts-node": "^10.9.2",
-    "typescript": "~5.8.3"
+    "typescript": "~5.8.3",
+    "zod": "^3.25.67"
   },
   "dependencies": {
     "@aws-cdk/aws-lambda-python-alpha": "2.202.0-alpha.0",
