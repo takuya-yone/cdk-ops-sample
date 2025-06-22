@@ -24,5 +24,9 @@
     "@aws-cdk/aws-lambda-python-alpha": "2.202.0-alpha.0",
     "aws-cdk-lib": "2.202.0",
     "constructs": "^10.4.2"
+  },
+  "engines": {
+    "node": "22.x",
+    "pnpm": ">=10"
   }
 }
