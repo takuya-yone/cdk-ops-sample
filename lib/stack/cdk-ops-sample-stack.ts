@@ -6,8 +6,8 @@ export class CdkOpsSampleStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    const lambdaConstruct = new LambdaConstruct(this, "LambdaConstruct", {});
+    const lambdaConstruct = new LambdaConstruct(this, "LambdaConstruct");
 
-    const networkConstruct = new NetworkConstruct(this, "NetworkConstruct", {});
+    const networkConstruct = new NetworkConstruct(this, "NetworkConstruct");
   }
 }
