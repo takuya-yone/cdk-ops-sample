@@ -9,7 +9,8 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "check": "biome check --write ."
+    "check": "biome check --write .",
+    "pytest": "uv run pytest -vv -s tests"
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.4",
@@ -28,8 +29,5 @@
     "aws-cdk-lib": "2.202.0",
     "constructs": "^10.4.2"
   },
-  "engines": {
-    "node": "22.x",
-    "pnpm": ">=10"
-  }
+  "packageManager": "pnpm@10.12.1"
 }
