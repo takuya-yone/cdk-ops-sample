@@ -9,6 +9,6 @@ def test_lambda_handler(mocker, create_s3_bucket):
     from src.function.list_s3 import lambda_handler
 
     res = lambda_handler({}, {})
-    
-    assert res['statusCode'] == 200
-    assert res['body'] == 'Hello from Lambda!'
+
+    assert res["statusCode"] == 200
+    assert res["body"] == "Hello from Lambda!"

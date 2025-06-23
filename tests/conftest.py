@@ -1,13 +1,14 @@
+import os
+
 import boto3
 import pytest
 from moto import mock_aws
-import os
 
 
 @pytest.fixture()
 def aws_credentials():
     """Mocked AWS Credentials for moto."""
-    os.environ['AWS_DEFAULT_REGION'] = 'us-east-1'
+    os.environ["AWS_DEFAULT_REGION"] = "us-east-1"
 
 
 @pytest.fixture()

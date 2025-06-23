@@ -10,7 +10,9 @@
     "test": "jest",
     "cdk": "cdk",
     "check": "biome check --write .",
-    "pytest": "uv run pytest -vv -s tests"
+    "pytest": "uv run pytest -vv -s tests",
+    "py:fix": "./python_fix.sh",
+    "ts:fix": "biome check lib src tests --write"
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.4",
