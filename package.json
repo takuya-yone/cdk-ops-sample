@@ -1,6 +1,6 @@
 {
   "name": "cdk-ops-sample",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "bin": {
     "cdk-ops-sample": "bin/cdk-ops-sample.js"
   },
