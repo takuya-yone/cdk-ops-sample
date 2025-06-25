@@ -12,7 +12,7 @@ export class LambdaConstruct extends Construct {
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaBasicExecutionRole",
+          "service-role/AWSLambdaBasicExecutionRole"
         ),
         iam.ManagedPolicy.fromAwsManagedPolicyName("AWSXrayWriteOnlyAccess"),
         iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonS3ReadOnlyAccess"),
@@ -22,7 +22,7 @@ export class LambdaConstruct extends Construct {
 
     const _nodeLambda = new CustomNodejsFunction(this, "custom-nodejs-lambda", {
       functionName: "custom-nodejs-lambda",
-      entry: "src/lambda/list-s3.ts",
+      entry: "src/function/list-s3.ts",
       role: lambdaRole,
       memorySize: 128,
       timeout: cdk.Duration.seconds(10),
@@ -30,7 +30,7 @@ export class LambdaConstruct extends Construct {
 
     const _nodeLambda2 = new node_lambda.NodejsFunction(this, "nodejs-lambda", {
       functionName: "nodejs-lambda",
-      entry: "src/lambda/list-s3.ts",
+      entry: "src/function/list-s3.ts",
       role: lambdaRole,
       memorySize: 128,
       timeout: cdk.Duration.seconds(10),
