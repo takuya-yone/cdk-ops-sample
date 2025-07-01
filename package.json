@@ -12,7 +12,8 @@
     "check": "biome check --write .",
     "pytest": "uv run pytest -vv -s tests",
     "py:fix": "./python_fix.sh",
-    "ts:fix": "biome check lib src tests --write"
+    "ts:fix": "biome check lib src tests --write",
+    "jest:cov": "jest --coverage"
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.4",
@@ -28,8 +29,11 @@
   },
   "dependencies": {
     "@aws-cdk/aws-lambda-python-alpha": "2.202.0-alpha.0",
+    "@aws-sdk/client-sqs": "^3.840.0",
     "aws-cdk-lib": "2.202.0",
+    "aws-sdk-client-mock": "^4.1.0",
+    "aws-sdk-client-mock-jest": "^4.1.0",
     "constructs": "^10.4.2"
   },
-  "packageManager": "pnpm@10.12.1"
+  "packageManager": "pnpm@10.12.4"
 }
