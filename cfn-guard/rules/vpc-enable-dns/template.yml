@@ -1,0 +1,6 @@
+Resources:
+  NetworkConstructsamplevpc83FD247E:
+    Type: AWS::EC2::VPC
+    Properties:
+      EnableDnsHostnames: true
+      EnableDnsSupport: true

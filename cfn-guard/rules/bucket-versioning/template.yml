@@ -1,0 +1,6 @@
+Resources:
+  DatastoreConstructsamplebucket8A927DF3:
+    Type: AWS::S3::Bucket
+    Properties:
+      VersioningConfiguration:
+        Status: Enabled

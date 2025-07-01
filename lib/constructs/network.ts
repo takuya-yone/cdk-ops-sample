@@ -9,8 +9,8 @@ export class NetworkConstruct extends Construct {
       vpcName: "sample-vpc",
       ipAddresses: ec2.IpAddresses.cidr("10.0.0.0/16"),
       maxAzs: 2,
-      enableDnsSupport: true,
-      enableDnsHostnames: true,
+      enableDnsSupport: false,
+      enableDnsHostnames: false,
       flowLogs: {
         rejectLogs: {
           trafficType: ec2.FlowLogTrafficType.REJECT,
