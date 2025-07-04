@@ -1,8 +1,7 @@
 import {
-  DeleteMessageBatchCommand,
   GetQueueAttributesCommand,
   ReceiveMessageCommand,
-  ReceiveMessageResult,
+  type ReceiveMessageResult,
   SQSClient,
 } from "@aws-sdk/client-sqs";
 import { mockClient } from "aws-sdk-client-mock";
@@ -10,7 +9,7 @@ import { lambdaHandler } from "../../src/function/recieve-sqs-message";
 
 const sqsMock = mockClient(SQSClient);
 
-describe("create-index-trigger.ts", () => {
+describe("recieve-sqs-message.ts", () => {
   beforeEach(() => {
     sqsMock.reset();
   });
