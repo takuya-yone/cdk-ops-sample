@@ -1,6 +1,5 @@
 import {
   GetQueueAttributesCommand,
-  type Message,
   ReceiveMessageCommand,
   SQSClient,
 } from "@aws-sdk/client-sqs";
@@ -8,6 +7,29 @@ import {
 const sqsClient = new SQSClient({
   maxAttempts: 3,
 });
+
+type WazaMachineResponse = {
+  move?: {
+    name?: string;
+  };
+};
+
+type LambdaResponse = {
+  wazaName: string;
+  timestamp: string;
+}[];
+
+export const getDate = (): Date => {
+  return new Date();
+};
+
+export const fetchWazaName = async (machineId: string): Promise<string> => {
+  const response = await fetch(
+    `${process.env.SAMPLE_API_BASE}/api/v2/machine/${machineId}`,
+  );
+  const json = (await response.json()) as WazaMachineResponse;
+  return json.move?.name ?? "Unknown Waza";
+};
 
 // SQSキューの属性情報取得コマンド
 const sqsGetQueueAttributesCommand = new GetQueueAttributesCommand({
@@ -31,13 +53,21 @@ export const lambdaHandler = async () => {
 
   // メッセージが存在しない場合は終了
   if (sqsAttfribute.Attributes?.ApproximateNumberOfMessages === "0") {
-    return "No messages in the queue";
+    return [];
   }
 
   // SQSメッセージの受信
   const sqsMessage = await sqsClient.send(sqsRecieveMessageCommand);
   if (!sqsMessage.Messages || sqsMessage.Messages.length === 0) {
-    return "No messages received";
+    return [];
   }
-  return sqsMessage.Messages.map((message: Message) => message.Body);
+
+  const result: LambdaResponse = await Promise.all(
+    sqsMessage.Messages.map(async (message) => {
+      const wazaName = await fetchWazaName(message.Body ?? "no body");
+      return { wazaName: wazaName, timestamp: getDate().toISOString() };
+    }),
+  );
+
+  return result;
 };

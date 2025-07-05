@@ -12,7 +12,7 @@ export class CdkOpsSampleStack extends cdk.Stack {
 
     const _datastoreConstruct = new DatastoreConstruct(
       this,
-      "DatastoreConstruct"
+      "DatastoreConstruct",
     );
 
     const _lambdaConstruct = new LambdaConstruct(this, "LambdaConstruct");

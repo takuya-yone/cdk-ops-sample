@@ -5,5 +5,5 @@ module.exports = {
   transform: {
     "^.+\\.tsx?$": "ts-jest",
   },
-  globalSetup: '<rootDir>/tests/setup-env.ts',
+  globalSetup: "<rootDir>/tests/setup-env.ts",
 };
