@@ -14,7 +14,7 @@ export class DatastoreConstruct extends Construct {
       "sample-bucket-not-versioned",
       {
         versioned: false,
-      }
+      },
     );
   }
 }

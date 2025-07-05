@@ -11,6 +11,9 @@ importers:
       '@aws-cdk/aws-lambda-python-alpha':
         specifier: 2.204.0-alpha.0
         version: 2.204.0-alpha.0(aws-cdk-lib@2.204.0(constructs@10.4.2))(constructs@10.4.2)
+      '@aws-lambda-powertools/logger':
+        specifier: ^2.23.0
+        version: 2.23.0
       '@aws-sdk/client-sqs':
         specifier: ^3.840.0
         version: 3.840.0
@@ -96,6 +99,20 @@ packages:
 
   '@aws-crypto/util@5.2.0':
     resolution: {integrity: sha512-4RkU9EsI6ZpBve5fseQlGNUWKMa1RLPQ1dnjnQoe07ldfIzcsGb5hC5W0Dm7u423KWzawlrpbjXBrXCEv9zazQ==}
+
+  '@aws-lambda-powertools/commons@2.23.0':
+    resolution: {integrity: sha512-uZ4Ym5fu2OV7vQkdUskL1ZjyuMH+blN1KqQmmFjsPCPJcr0jqXxku9X+N7qbfWTwglNR9FCpnFPcxzeIPJ8ZFg==}
+
+  '@aws-lambda-powertools/logger@2.23.0':
+    resolution: {integrity: sha512-KbSSNzOcuFS4FabTasj0qUfyp1IbNORvs+vNkKU1WvrGhs9ae5iNJa57FKnm99iNyGRBD4WUiDUrtrIvVC2+Mw==}
+    peerDependencies:
+      '@aws-lambda-powertools/jmespath': 2.x
+      '@middy/core': 4.x || 5.x || 6.x
+    peerDependenciesMeta:
+      '@aws-lambda-powertools/jmespath':
+        optional: true
+      '@middy/core':
+        optional: true
 
   '@aws-sdk/client-sqs@3.840.0':
     resolution: {integrity: sha512-e14G4W8hw9uFrKh4w9CNUrIUuAd6sETOuuTQFD7FYPMoZDlNvEcStE53yr0Egw0D0poqNzedKF4aZJH5MzyB9A==}
@@ -1698,6 +1715,9 @@ packages:
   lodash.memoize@4.1.2:
     resolution: {integrity: sha512-t7j+NzmgnQzTAYXcsHYLgimltOV1MXHtlOWf6GjL9Kj8GK5FInw5JotxvbOs+IvV1/Dzo04/fCGfLVs7aXb4Ag==}
 
+  lodash.merge@4.6.2:
+    resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+
   loupe@3.1.4:
     resolution: {integrity: sha512-wJzkKwJrheKtknCOKNEtDK4iqg/MxmZheEMtSTYvnzRdEYaZzmgH976nenp8WdJRdx5Vc1X/9MO0Oszl6ezeXg==}
 
@@ -2157,6 +2177,13 @@ snapshots:
       '@aws-sdk/types': 3.840.0
       '@smithy/util-utf8': 2.3.0
       tslib: 2.8.1
+
+  '@aws-lambda-powertools/commons@2.23.0': {}
+
+  '@aws-lambda-powertools/logger@2.23.0':
+    dependencies:
+      '@aws-lambda-powertools/commons': 2.23.0
+      lodash.merge: 4.6.2
 
   '@aws-sdk/client-sqs@3.840.0':
     dependencies:
@@ -4301,6 +4328,8 @@ snapshots:
   lodash.get@4.4.2: {}
 
   lodash.memoize@4.1.2: {}
+
+  lodash.merge@4.6.2: {}
 
   loupe@3.1.4: {}
 

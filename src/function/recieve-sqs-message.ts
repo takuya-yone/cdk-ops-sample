@@ -1,3 +1,4 @@
+import { Logger } from "@aws-lambda-powertools/logger";
 import {
   GetQueueAttributesCommand,
   ReceiveMessageCommand,
@@ -25,7 +26,7 @@ export const getDate = (): Date => {
 
 export const fetchWazaName = async (machineId: string): Promise<string> => {
   const response = await fetch(
-    `${process.env.SAMPLE_API_BASE}/api/v2/machine/${machineId}`,
+    `${process.env.API_BASE_URL}/api/v2/machine/${machineId}`,
   );
   const json = (await response.json()) as WazaMachineResponse;
   return json.move?.name ?? "Unknown Waza";
@@ -33,7 +34,7 @@ export const fetchWazaName = async (machineId: string): Promise<string> => {
 
 // SQSキューの属性情報取得コマンド
 const sqsGetQueueAttributesCommand = new GetQueueAttributesCommand({
-  QueueUrl: process.env.SAMPLE_QUEUE_URL,
+  QueueUrl: process.env.QUEUE_URL,
   AttributeNames: [
     "ApproximateNumberOfMessages",
     "ApproximateNumberOfMessagesNotVisible",
@@ -43,22 +44,26 @@ const sqsGetQueueAttributesCommand = new GetQueueAttributesCommand({
 
 // SQSメッセージ受信コマンド
 const sqsRecieveMessageCommand = new ReceiveMessageCommand({
-  QueueUrl: process.env.SAMPLE_QUEUE_URL,
+  QueueUrl: process.env.QUEUE_URL,
   MaxNumberOfMessages: 10,
 });
 
-export const lambdaHandler = async () => {
+const logger = new Logger({ serviceName: "serverlessAirline" });
+
+export const lambdaHandler = async (): Promise<LambdaResponse> => {
   // SQSの属性情報取得
   const sqsAttfribute = await sqsClient.send(sqsGetQueueAttributesCommand);
 
   // メッセージが存在しない場合は終了
   if (sqsAttfribute.Attributes?.ApproximateNumberOfMessages === "0") {
+    logger.info(getDate().toISOString());
     return [];
   }
 
   // SQSメッセージの受信
   const sqsMessage = await sqsClient.send(sqsRecieveMessageCommand);
   if (!sqsMessage.Messages || sqsMessage.Messages.length === 0) {
+    logger.info(getDate().toISOString());
     return [];
   }
 

@@ -41,7 +41,7 @@ export class CustomNodejsFunction extends node_lambda.NodejsFunction {
     super(scope, id, {
       ...props,
       runtime: lambda.Runtime.NODEJS_22_X,
-      handler: "handler",
+      handler: "lambdaHandler",
       tracing: lambda.Tracing.ACTIVE,
       retryAttempts: 0,
       logGroup: new logs.LogGroup(scope, `${props.functionName}-logs`, {
