@@ -19,7 +19,10 @@
     "experimentalDecorators": true,
     "strictPropertyInitialization": false,
     "isolatedModules": true,
-    "typeRoots": ["./node_modules/@types"]
+    "typeRoots": ["./node_modules/@types"],
+    "paths": {
+      "nodejs-layer": ["./src/layer/nodejs-layer"], 
+    }
   },
   "exclude": ["node_modules", "cdk.out"]
 }

@@ -5,6 +5,9 @@ import {
   SQSClient,
 } from "@aws-sdk/client-sqs"
 
+// Importing the getDate function from the nodejs-layer
+import { getDate } from "nodejs-layer"
+
 const sqsClient = new SQSClient({
   maxAttempts: 3,
 })
@@ -20,9 +23,9 @@ type LambdaResponse = {
   timestamp: string
 }[]
 
-export const getDate = (): Date => {
-  return new Date()
-}
+// export const getDate = (): Date => {
+//   return new Date()
+// }
 
 export const fetchWazaName = async (machineId: string): Promise<string> => {
   const response = await fetch(

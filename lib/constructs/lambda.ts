@@ -1,6 +1,7 @@
 import * as cdk from "aws-cdk-lib"
 import {
   aws_iam as iam,
+  aws_lambda as lambda,
   aws_lambda_nodejs as node_lambda,
   aws_sqs as sqs,
 } from "aws-cdk-lib"
@@ -30,6 +31,14 @@ export class LambdaConstruct extends Construct {
     })
     sampleQueue.grantConsumeMessages(lambdaRole)
 
+    const layer = new lambda.LayerVersion(this, "SampleNodejsLayer", {
+      layerVersionName: "SampleNodejsLayer",
+      code: lambda.Code.fromAsset("src/layer/nodejs-layer"),
+      compatibleRuntimes: [lambda.Runtime.NODEJS_22_X],
+      compatibleArchitectures: [lambda.Architecture.ARM_64],
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    })
+
     const _nodeLambda = new CustomNodejsFunction(this, "custom-nodejs-lambda", {
       functionName: "custom-nodejs-lambda",
       entry: "src/function/recieve-sqs-message.ts",
@@ -40,12 +49,16 @@ export class LambdaConstruct extends Construct {
         QUEUE_URL: sampleQueue.queueUrl,
         API_BASE_URL: "https://pokeapi.co",
       },
+      layers: [layer],
     })
 
     const _nodeLambda2 = new node_lambda.NodejsFunction(this, "nodejs-lambda", {
       functionName: "nodejs-lambda",
       entry: "src/function/recieve-sqs-message.ts",
       handler: "lambdaHandler",
+      runtime: lambda.Runtime.NODEJS_22_X,
+      tracing: lambda.Tracing.ACTIVE,
+      architecture: lambda.Architecture.ARM_64,
       role: lambdaRole,
       memorySize: 128,
       timeout: cdk.Duration.seconds(10),
@@ -53,6 +66,7 @@ export class LambdaConstruct extends Construct {
         QUEUE_URL: sampleQueue.queueUrl,
         API_BASE_URL: "https://pokeapi.co",
       },
+      layers: [layer],
     })
   }
 }
