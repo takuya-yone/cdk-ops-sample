@@ -4,9 +4,9 @@ import {
   // biome-ignore lint/style/noRestrictedImports: for declaration
   aws_lambda_nodejs as node_lambda,
   RemovalPolicy,
-} from "aws-cdk-lib";
-import type { NodejsFunctionProps } from "aws-cdk-lib/aws-lambda-nodejs";
-import type { Construct } from "constructs";
+} from "aws-cdk-lib"
+import type { NodejsFunctionProps } from "aws-cdk-lib/aws-lambda-nodejs"
+import type { Construct } from "constructs"
 
 /*
  * 不要なプロパティ
@@ -18,20 +18,20 @@ type FixedField =
   | "tracing"
   | "retryAttempts"
   | "logGroup"
-  | "architecture";
+  | "architecture"
 
 /*
  * 必須化するプロパティ
  */
 type EssentialField = Required<
   Pick<NodejsFunctionProps, "functionName" | "entry">
->;
+>
 
 /*
  * 最終的なプロパティ
  */
 type CustomNodejsFunctionProps = Omit<NodejsFunctionProps, FixedField> &
-  EssentialField;
+  EssentialField
 
 /*
  * CustomNodejsFunctionのコンストラクタ
@@ -50,6 +50,6 @@ export class CustomNodejsFunction extends node_lambda.NodejsFunction {
         removalPolicy: RemovalPolicy.DESTROY,
       }),
       architecture: lambda.Architecture.ARM_64,
-    });
+    })
   }
 }

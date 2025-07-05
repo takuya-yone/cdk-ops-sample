@@ -3,47 +3,47 @@ import {
   ReceiveMessageCommand,
   type ReceiveMessageResult,
   SQSClient,
-} from "@aws-sdk/client-sqs";
-import { mockClient } from "aws-sdk-client-mock";
-import { lambdaHandler } from "../../src/function/recieve-sqs-message";
+} from "@aws-sdk/client-sqs"
+import { mockClient } from "aws-sdk-client-mock"
+import { lambdaHandler } from "../../src/function/recieve-sqs-message"
 
 // SQSクライアントのモック化
-const sqsMock = mockClient(SQSClient);
+const sqsMock = mockClient(SQSClient)
 
 describe("recieve-sqs-message.ts w/ mock", () => {
   // 特定メソッドのモック化
   const fetchWazaNameSpyOn = jest
     .spyOn(require("../../src/function/recieve-sqs-message"), "fetchWazaName")
-    .mockImplementation(() => "mock-waza-name");
+    .mockImplementation(() => "mock-waza-name")
   const getDateSpyOn = jest
     .spyOn(require("../../src/function/recieve-sqs-message"), "getDate")
-    .mockImplementation(() => new Date(2000, 0, 1));
+    .mockImplementation(() => new Date(2000, 0, 1))
 
   beforeEach(() => {
-    sqsMock.reset();
-  });
+    sqsMock.reset()
+  })
 
   // テスト完了後、モック化したメソッドの復元
   afterAll(() => {
-    fetchWazaNameSpyOn.mockRestore();
-    getDateSpyOn.mockRestore();
-  });
+    fetchWazaNameSpyOn.mockRestore()
+    getDateSpyOn.mockRestore()
+  })
 
   it("w/ 0 sqs message", async () => {
     // ダミーのレスポンス定義
     sqsMock
       .on(GetQueueAttributesCommand)
-      .resolves({ Attributes: { ApproximateNumberOfMessages: "0" } });
+      .resolves({ Attributes: { ApproximateNumberOfMessages: "0" } })
 
     // for AWSのAPI実行内容確認
     // const sqsMockCalls = sqsMock.calls();
 
     // Lambdaハンドラーの実行
-    const response = await lambdaHandler();
+    const response = await lambdaHandler()
 
     // Lambdaレスポンスの値チェック
-    expect(response).toStrictEqual([]);
-  });
+    expect(response).toStrictEqual([])
+  })
 
   it("w/ 1 sqs message on mock", async () => {
     // ダミーのレスポンス定義
@@ -51,7 +51,7 @@ describe("recieve-sqs-message.ts w/ mock", () => {
       Attributes: {
         ApproximateNumberOfMessages: "1",
       },
-    });
+    })
 
     const mockReceiveMessageResult: ReceiveMessageResult = {
       Messages: [
@@ -61,17 +61,17 @@ describe("recieve-sqs-message.ts w/ mock", () => {
           Body: "11",
         },
       ],
-    };
-    sqsMock.on(ReceiveMessageCommand).resolves(mockReceiveMessageResult);
+    }
+    sqsMock.on(ReceiveMessageCommand).resolves(mockReceiveMessageResult)
 
     // Lambdaハンドラーの実行
-    const response = await lambdaHandler();
+    const response = await lambdaHandler()
 
     // Lambdaレスポンスの値チェック
     expect(response).toStrictEqual([
       { wazaName: "mock-waza-name", timestamp: "1999-12-31T15:00:00.000Z" },
-    ]);
-  });
+    ])
+  })
 
   it("w/ 3 sqs message", async () => {
     // ダミーのレスポンス定義
@@ -79,7 +79,7 @@ describe("recieve-sqs-message.ts w/ mock", () => {
       Attributes: {
         ApproximateNumberOfMessages: "3",
       },
-    });
+    })
 
     const mockReceiveMessageResult: ReceiveMessageResult = {
       Messages: [
@@ -99,19 +99,19 @@ describe("recieve-sqs-message.ts w/ mock", () => {
           Body: "33",
         },
       ],
-    };
-    sqsMock.on(ReceiveMessageCommand).resolves(mockReceiveMessageResult);
+    }
+    sqsMock.on(ReceiveMessageCommand).resolves(mockReceiveMessageResult)
 
     // Lambdaハンドラーの実行
-    const response = await lambdaHandler();
+    const response = await lambdaHandler()
 
     // Lambdaレスポンスの値チェック
     expect(response).toStrictEqual([
       { wazaName: "mock-waza-name", timestamp: "1999-12-31T15:00:00.000Z" },
       { wazaName: "mock-waza-name", timestamp: "1999-12-31T15:00:00.000Z" },
       { wazaName: "mock-waza-name", timestamp: "1999-12-31T15:00:00.000Z" },
-    ]);
-  });
+    ])
+  })
 
   it("inspect sqs client commands", async () => {
     // ダミーのレスポンス定義
@@ -119,7 +119,7 @@ describe("recieve-sqs-message.ts w/ mock", () => {
       Attributes: {
         ApproximateNumberOfMessages: "3",
       },
-    });
+    })
 
     const mockReceiveMessageResult: ReceiveMessageResult = {
       Messages: [
@@ -139,19 +139,19 @@ describe("recieve-sqs-message.ts w/ mock", () => {
           Body: "33",
         },
       ],
-    };
-    sqsMock.on(ReceiveMessageCommand).resolves(mockReceiveMessageResult);
+    }
+    sqsMock.on(ReceiveMessageCommand).resolves(mockReceiveMessageResult)
 
     // Lambdaハンドラーの実行
-    await lambdaHandler();
+    await lambdaHandler()
 
-    const sqsMockCalls = sqsMock.calls();
-    expect(sqsMockCalls.length).toEqual(2);
+    const sqsMockCalls = sqsMock.calls()
+    expect(sqsMockCalls.length).toEqual(2)
 
     const calledGetAttributeCommand = sqsMock.commandCalls(
       GetQueueAttributesCommand,
-    );
-    expect(calledGetAttributeCommand.length).toBe(1);
+    )
+    expect(calledGetAttributeCommand.length).toBe(1)
     expect(calledGetAttributeCommand[0].args[0].input).toEqual({
       AttributeNames: [
         "ApproximateNumberOfMessages",
@@ -160,24 +160,24 @@ describe("recieve-sqs-message.ts w/ mock", () => {
       ],
       QueueUrl:
         "https://sqs.ap-northeast-1.amazonaws.com/123456789012/sample-queue",
-    });
+    })
 
     const calledReceiveMessageCommand = sqsMock.commandCalls(
       ReceiveMessageCommand,
-    );
-    expect(calledReceiveMessageCommand.length).toBe(1);
+    )
+    expect(calledReceiveMessageCommand.length).toBe(1)
     expect(calledReceiveMessageCommand[0].args[0].input).toEqual({
       MaxNumberOfMessages: 10,
       QueueUrl:
         "https://sqs.ap-northeast-1.amazonaws.com/123456789012/sample-queue",
-    });
-  });
-});
+    })
+  })
+})
 
 describe("recieve-sqs-message.ts w/o mock", () => {
   beforeEach(() => {
-    sqsMock.reset();
-  });
+    sqsMock.reset()
+  })
 
   it("w/ 3 sqs message", async () => {
     // ダミーのレスポンス定義
@@ -185,7 +185,7 @@ describe("recieve-sqs-message.ts w/o mock", () => {
       Attributes: {
         ApproximateNumberOfMessages: "3",
       },
-    });
+    })
 
     const mockReceiveMessageResult: ReceiveMessageResult = {
       Messages: [
@@ -205,24 +205,24 @@ describe("recieve-sqs-message.ts w/o mock", () => {
           Body: "33",
         },
       ],
-    };
-    sqsMock.on(ReceiveMessageCommand).resolves(mockReceiveMessageResult);
+    }
+    sqsMock.on(ReceiveMessageCommand).resolves(mockReceiveMessageResult)
 
     // Lambdaハンドラーの実行
-    const response = await lambdaHandler();
+    const response = await lambdaHandler()
 
     // レスポンスの値チェック
     const expectedWazaNames = [
       "focus-punch", // きあいパンチ
       "razor-wind", // かまいたち
       "dragon-claw", // ドラゴンクロー
-    ];
+    ]
     response.forEach((item, index) => {
       // わざ名が期待値通りか？
-      expect(item.wazaName).toBe(expectedWazaNames[index]);
+      expect(item.wazaName).toBe(expectedWazaNames[index])
       // タイムスタンプが定義されているか？
       // （タイムスタンプ値比較はズレが発生するので実施しない）
-      expect(item.timestamp).toBeDefined();
-    });
-  });
-});
+      expect(item.timestamp).toBeDefined()
+    })
+  })
+})

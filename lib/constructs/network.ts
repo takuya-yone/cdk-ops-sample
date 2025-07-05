@@ -1,9 +1,9 @@
-import { aws_ec2 as ec2 } from "aws-cdk-lib";
-import { Construct } from "constructs";
+import { aws_ec2 as ec2 } from "aws-cdk-lib"
+import { Construct } from "constructs"
 
 export class NetworkConstruct extends Construct {
   constructor(scope: Construct, id: string) {
-    super(scope, id);
+    super(scope, id)
 
     const _vpc = new ec2.Vpc(this, "sample-vpc", {
       vpcName: "sample-vpc",
@@ -29,6 +29,6 @@ export class NetworkConstruct extends Construct {
           subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
         },
       ],
-    });
+    })
   }
 }

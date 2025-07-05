@@ -7,9 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": [
-      "**/*.ts"
-    ]
+    "includes": ["**/*.ts"]
   },
   "formatter": {
     "enabled": true,
@@ -31,15 +29,11 @@
           "options": {
             "paths": {
               "aws-cdk-lib": {
-                "importNames": [
-                  "aws_lambda_nodejs"
-                ],
+                "importNames": ["aws_lambda_nodejs"],
                 "message": "use CustomNodejsFunction instead."
               },
               "@aws-cdk/aws-lambda-python-alpha": {
-                "importNames": [
-                  "PythonFunction"
-                ],
+                "importNames": ["PythonFunction"],
                 "message": "use CustomPythonFunction instead."
               }
             }
@@ -50,7 +44,8 @@
   },
   "javascript": {
     "formatter": {
-      "quoteStyle": "double"
+      "quoteStyle": "double",
+      "semicolons": "asNeeded"
     }
   },
   "assist": {

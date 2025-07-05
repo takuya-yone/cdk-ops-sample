@@ -1,8 +1,8 @@
-import type { PythonFunctionProps } from "@aws-cdk/aws-lambda-python-alpha";
+import type { PythonFunctionProps } from "@aws-cdk/aws-lambda-python-alpha"
 // biome-ignore lint/style/noRestrictedImports: for declaration
-import { PythonFunction } from "@aws-cdk/aws-lambda-python-alpha";
-import { aws_lambda as lambda } from "aws-cdk-lib";
-import type { Construct } from "constructs";
+import { PythonFunction } from "@aws-cdk/aws-lambda-python-alpha"
+import { aws_lambda as lambda } from "aws-cdk-lib"
+import type { Construct } from "constructs"
 
 type OptionalField =
   | "runtime"
@@ -10,9 +10,9 @@ type OptionalField =
   | "handler"
   | "tracing"
   | "retryAttempts"
-  | "architecture";
+  | "architecture"
 
-type CustomPythonFunctionProps = Omit<PythonFunctionProps, OptionalField>;
+type CustomPythonFunctionProps = Omit<PythonFunctionProps, OptionalField>
 
 export class CustomPythonFunction extends PythonFunction {
   constructor(scope: Construct, id: string, props: CustomPythonFunctionProps) {
@@ -24,6 +24,6 @@ export class CustomPythonFunction extends PythonFunction {
       tracing: lambda.Tracing.ACTIVE,
       retryAttempts: 0,
       architecture: lambda.Architecture.ARM_64,
-    });
+    })
   }
 }
