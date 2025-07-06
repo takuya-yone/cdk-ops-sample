@@ -65,9 +65,13 @@ def setup(create_sqs_queue):
 
 @pytest.fixture()
 def fixture_get_waza_name(mocker):
-    return mocker.patch("src.function.recieve_sqs_message.index.get_waza_name", return_value="mock-waza-name")
+    return mocker.patch(
+        "src.function.python_function.recieve_sqs_message.index.get_waza_name", return_value="mock-waza-name"
+    )
 
 
 @pytest.fixture()
 def fixture_get_now(mocker):
-    return mocker.patch("src.function.recieve_sqs_message.index.get_now", return_value=datetime(2000, 1, 1))
+    return mocker.patch(
+        "src.function.python_function.recieve_sqs_message.index.get_now", return_value=datetime(2000, 1, 1)
+    )

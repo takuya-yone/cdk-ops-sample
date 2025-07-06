@@ -6,8 +6,8 @@ import {
 } from "@aws-sdk/client-sqs"
 import { mockClient } from "aws-sdk-client-mock"
 import * as dateUtils from "nodejs-layer"
-import * as mainTs from "../../src/function/recieve-sqs-message"
-import { lambdaHandler } from "../../src/function/recieve-sqs-message"
+import * as mainTs from "../../src/function/nodejs-function/recieve-sqs-message"
+import { lambdaHandler } from "../../src/function/nodejs-function/recieve-sqs-message"
 
 // SQSクライアントのモック化
 const sqsMock = mockClient(SQSClient)
@@ -149,7 +149,7 @@ describe("recieve-sqs-message.ts w/ mock", () => {
     await lambdaHandler()
 
     const sqsMockCalls = sqsMock.calls()
-    expect(sqsMockCalls.length).toEqual(2)
+    expect(sqsMockCalls.length).toEqual(3)
 
     const calledGetAttributeCommand = sqsMock.commandCalls(
       GetQueueAttributesCommand,

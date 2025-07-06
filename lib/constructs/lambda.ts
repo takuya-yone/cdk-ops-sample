@@ -48,7 +48,7 @@ export class LambdaConstruct extends Construct {
       "custom-nodejs-lambda",
       {
         functionName: "custom-nodejs-lambda",
-        entry: "src/function/recieve-sqs-message.ts",
+        entry: "src/function/nodejs-function/recieve-sqs-message.ts",
         role: lambdaRole,
         memorySize: 128,
         timeout: cdk.Duration.seconds(10),
@@ -62,7 +62,7 @@ export class LambdaConstruct extends Construct {
 
     const _nodeLambda = new node_lambda.NodejsFunction(this, "nodejs-lambda", {
       functionName: "nodejs-lambda",
-      entry: "src/function/recieve-sqs-message.ts",
+      entry: "src/function/nodejs-function/recieve-sqs-message.ts",
       handler: "lambdaHandler",
       runtime: lambda.Runtime.NODEJS_22_X,
       tracing: lambda.Tracing.ACTIVE,
@@ -90,7 +90,7 @@ export class LambdaConstruct extends Construct {
       "custom-python-lambda",
       {
         functionName: "custom-python-lambda",
-        entry: "src/function/recieve_sqs_message",
+        entry: "src/function/python_function/recieve_sqs_message",
         role: lambdaRole,
         memorySize: 128,
         timeout: cdk.Duration.seconds(10),
@@ -104,7 +104,7 @@ export class LambdaConstruct extends Construct {
 
     const _pythonLambda = new PythonFunction(this, "python-lambda", {
       functionName: "python-lambda",
-      entry: "src/function/recieve_sqs_message",
+      entry: "src/function/python_function/recieve_sqs_message",
       runtime: lambda.Runtime.PYTHON_3_13,
       bundling: { assetExcludes: ["__pycache__", "test"] },
       handler: "lambda_handler",

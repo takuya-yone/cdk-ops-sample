@@ -14,6 +14,8 @@
     "py:test": "uv run pytest -vv -s tests",
     "ts:fix": "biome check bin lib src tests --write",
     "ts:test": "jest --coverage",
+    "all:test": "pnpm py:test && pnpm ts:test",
+    "all:fix": "pnpm py:fix && pnpm ts:fix",
     "ecr:login": "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws"
   },
   "devDependencies": {

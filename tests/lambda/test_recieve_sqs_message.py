@@ -7,7 +7,8 @@ class TestWithMock:
         """
         handlerのテスト（キューにメッセージが0件）
         """
-        from src.function.recieve_sqs_message.index import lambda_handler
+        from src.function.python_function.recieve_sqs_message.index import \
+            lambda_handler
 
         res = lambda_handler({}, {})
 
@@ -18,7 +19,8 @@ class TestWithMock:
         """
         handlerのテスト（キューにメッセージが1件）
         """
-        from src.function.recieve_sqs_message.index import lambda_handler
+        from src.function.python_function.recieve_sqs_message.index import \
+            lambda_handler
 
         res = lambda_handler({}, {})
 
@@ -32,7 +34,8 @@ class TestWithMock:
         """
         handlerのテスト（キューにメッセージが3件）
         """
-        from src.function.recieve_sqs_message.index import lambda_handler
+        from src.function.python_function.recieve_sqs_message.index import \
+            lambda_handler
 
         res = lambda_handler({}, {})
 
@@ -51,7 +54,8 @@ class TestWithoutMock:
         """
         handlerのテスト（キューにメッセージが3件）
         """
-        from src.function.recieve_sqs_message.index import lambda_handler
+        from src.function.python_function.recieve_sqs_message.index import \
+            lambda_handler
 
         res = lambda_handler({}, {})
 

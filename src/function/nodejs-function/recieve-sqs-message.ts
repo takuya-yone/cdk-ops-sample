@@ -1,6 +1,8 @@
 import { Logger } from "@aws-lambda-powertools/logger"
 import {
+  DeleteMessageBatchCommand,
   GetQueueAttributesCommand,
+  type Message,
   ReceiveMessageCommand,
   SQSClient,
 } from "@aws-sdk/client-sqs"
@@ -51,6 +53,16 @@ const sqsRecieveMessageCommand = new ReceiveMessageCommand({
   MaxNumberOfMessages: 10,
 })
 
+// SQSメッセージ削除コマンド
+const _sqsDeleteMessageBatchCommand = (messages: Message[]) =>
+  new DeleteMessageBatchCommand({
+    QueueUrl: process.env.QUEUE_URL,
+    Entries: messages.map((message) => ({
+      Id: message.MessageId,
+      ReceiptHandle: message.ReceiptHandle,
+    })),
+  })
+
 const logger = new Logger({ serviceName: "serverlessAirline" })
 
 export const lambdaHandler = async (): Promise<LambdaResponse> => {
@@ -75,6 +87,10 @@ export const lambdaHandler = async (): Promise<LambdaResponse> => {
       return { wazaName: wazaName, timestamp: getDate().toISOString() }
     }),
   )
+
+  // メッセージ削除コマンドの実行
+  const batchDeleteCommand = _sqsDeleteMessageBatchCommand(sqsMessage.Messages)
+  await sqsClient.send(batchDeleteCommand)
 
   return result
 }

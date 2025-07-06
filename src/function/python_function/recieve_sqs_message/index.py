@@ -50,4 +50,12 @@ def lambda_handler(event, context) -> list:
         sqs_messages.get("Messages", []),
     )
 
+    # メッセージを削除
+    delete_message_entries = [
+        {"Id": message["MessageId"], "ReceiptHandle": message["ReceiptHandle"]}
+        for message in sqs_messages.get("Messages", [])
+    ]
+    sqs_client.delete_message_batch(
+        QueueUrl=QUEUE_URL, Entries=delete_message_entries)
+
     return list(result)
