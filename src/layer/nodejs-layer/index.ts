@@ -1,1 +1,1 @@
-export * from "./date-utils"
+export { getDate } from "./date-utils"

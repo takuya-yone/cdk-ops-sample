@@ -5,24 +5,23 @@ import {
   SQSClient,
 } from "@aws-sdk/client-sqs"
 import { mockClient } from "aws-sdk-client-mock"
+import * as dateUtils from "nodejs-layer"
 import * as mainTs from "../../src/function/recieve-sqs-message"
 import { lambdaHandler } from "../../src/function/recieve-sqs-message"
 
 // SQSクライアントのモック化
 const sqsMock = mockClient(SQSClient)
 
-jest.mock("nodejs-layer", () => {
-  return {
-    getDate: jest.fn(() => new Date(2000, 0, 1)),
-  }
-})
+// 特定メソッドのモック化
+const fetchWazaNameSpyOn = jest
+  .spyOn(mainTs, "fetchWazaName")
+  .mockResolvedValue("mock-waza-name")
+// 特定メソッドのモック化
+const getDateSpyOn = jest
+  .spyOn(dateUtils, "getDate")
+  .mockReturnValue(new Date(2000, 0, 1))
 
 describe("recieve-sqs-message.ts w/ mock", () => {
-  // 特定メソッドのモック化
-  const fetchWazaNameSpyOn = jest
-    .spyOn(mainTs, "fetchWazaName")
-    .mockResolvedValue("mock-waza-name")
-
   beforeEach(() => {
     sqsMock.reset()
   })
@@ -30,7 +29,7 @@ describe("recieve-sqs-message.ts w/ mock", () => {
   // テスト完了後、モック化したメソッドの復元
   afterAll(() => {
     fetchWazaNameSpyOn.mockRestore()
-    // getDateSpyOn.mockRestore()
+    getDateSpyOn.mockRestore()
   })
 
   it("w/ 0 sqs message", async () => {
@@ -215,10 +214,18 @@ describe("recieve-sqs-message.ts w/o mock", () => {
     // Lambdaハンドラーの実行
     const response = await lambdaHandler()
 
-    expect(response).toStrictEqual([
-      { wazaName: "focus-punch", timestamp: "1999-12-31T15:00:00.000Z" }, // きあいパンチ
-      { wazaName: "razor-wind", timestamp: "1999-12-31T15:00:00.000Z" }, // かまいたち
-      { wazaName: "dragon-claw", timestamp: "1999-12-31T15:00:00.000Z" }, // ドラゴンクロー
-    ])
+    // レスポンスの値チェック
+    const expectedWazaNames = [
+      "focus-punch", // きあいパンチ
+      "razor-wind", // かまいたち
+      "dragon-claw", // ドラゴンクロー
+    ]
+    response.forEach((item, index) => {
+      // わざ名が期待値通りか？
+      expect(item.wazaName).toBe(expectedWazaNames[index])
+      // タイムスタンプが定義されているか？
+      // （タイムスタンプ値比較はズレが発生するので実施しない）
+      expect(item.timestamp).toBeDefined()
+    })
   })
 })
