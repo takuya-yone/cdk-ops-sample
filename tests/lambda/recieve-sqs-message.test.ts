@@ -5,19 +5,23 @@ import {
   SQSClient,
 } from "@aws-sdk/client-sqs"
 import { mockClient } from "aws-sdk-client-mock"
+import { getDate } from "nodejs-layer"
+import * as mainTs from "../../src/function/recieve-sqs-message"
 import { lambdaHandler } from "../../src/function/recieve-sqs-message"
 
 // SQSクライアントのモック化
 const sqsMock = mockClient(SQSClient)
 
+const _foo = { getDate }
+
 describe("recieve-sqs-message.ts w/ mock", () => {
   // 特定メソッドのモック化
   const fetchWazaNameSpyOn = jest
-    .spyOn(require("../../src/function/recieve-sqs-message"), "fetchWazaName")
-    .mockImplementation(() => "mock-waza-name")
+    .spyOn(mainTs, "fetchWazaName")
+    .mockResolvedValue("mock-waza-name")
   const getDateSpyOn = jest
-    .spyOn(require("../../src/function/recieve-sqs-message"), "getDate")
-    .mockImplementation(() => new Date(2000, 0, 1))
+    .spyOn(_foo, "getDate")
+    .mockReturnValue(new Date(2000, 0, 1))
 
   beforeEach(() => {
     sqsMock.reset()
@@ -172,6 +176,8 @@ describe("recieve-sqs-message.ts w/ mock", () => {
         "https://sqs.ap-northeast-1.amazonaws.com/123456789012/sample-queue",
     })
   })
+  console.log(fetchWazaNameSpyOn.mock.calls)
+  console.log(getDateSpyOn.mock.calls)
 })
 
 describe("recieve-sqs-message.ts w/o mock", () => {

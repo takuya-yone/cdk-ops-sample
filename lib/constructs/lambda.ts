@@ -1,36 +1,36 @@
-import * as cdk from "aws-cdk-lib";
+import { PythonLayerVersion } from "@aws-cdk/aws-lambda-python-alpha"
+import * as cdk from "aws-cdk-lib"
 import {
   aws_iam as iam,
   aws_lambda as lambda,
   aws_lambda_nodejs as node_lambda,
   aws_sqs as sqs,
-} from "aws-cdk-lib";
-import { Construct } from "constructs";
-import { CustomNodejsFunction, CustomPythonFunction } from "../custom-resource";
-import { PythonLayerVersion } from "@aws-cdk/aws-lambda-python-alpha";
+} from "aws-cdk-lib"
+import { Construct } from "constructs"
+import { CustomNodejsFunction, CustomPythonFunction } from "../custom-resource"
 
 export class LambdaConstruct extends Construct {
   constructor(scope: Construct, id: string) {
-    super(scope, id);
+    super(scope, id)
 
     const sampleQueue = new sqs.Queue(this, "sample-queue", {
       queueName: "sample-queue",
       visibilityTimeout: cdk.Duration.seconds(30),
-    });
+    })
 
     const lambdaRole = new iam.Role(this, "sample-lambda-role", {
       roleName: "sample-lambda-role",
       assumedBy: new iam.ServicePrincipal("lambda.amazonaws.com"),
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaBasicExecutionRole"
+          "service-role/AWSLambdaBasicExecutionRole",
         ),
         iam.ManagedPolicy.fromAwsManagedPolicyName("AWSXrayWriteOnlyAccess"),
         iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonS3ReadOnlyAccess"),
       ],
       inlinePolicies: {},
-    });
-    sampleQueue.grantConsumeMessages(lambdaRole);
+    })
+    sampleQueue.grantConsumeMessages(lambdaRole)
 
     const nodejsLayer = new lambda.LayerVersion(this, "SampleNodejsLayer", {
       layerVersionName: "SampleNodejsLayer",
@@ -38,7 +38,7 @@ export class LambdaConstruct extends Construct {
       compatibleRuntimes: [lambda.Runtime.NODEJS_22_X],
       compatibleArchitectures: [lambda.Architecture.ARM_64],
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-    });
+    })
 
     const _customNodeLambda = new CustomNodejsFunction(
       this,
@@ -54,8 +54,8 @@ export class LambdaConstruct extends Construct {
           API_BASE_URL: "https://pokeapi.co",
         },
         layers: [nodejsLayer],
-      }
-    );
+      },
+    )
 
     const _nodeLambda = new node_lambda.NodejsFunction(this, "nodejs-lambda", {
       functionName: "nodejs-lambda",
@@ -72,7 +72,7 @@ export class LambdaConstruct extends Construct {
         API_BASE_URL: "https://pokeapi.co",
       },
       layers: [nodejsLayer],
-    });
+    })
 
     const pythonLayer = new PythonLayerVersion(this, "LambdaCustomLayer", {
       entry: "src/layer/python_layer",
@@ -80,7 +80,7 @@ export class LambdaConstruct extends Construct {
       compatibleRuntimes: [lambda.Runtime.PYTHON_3_13],
       compatibleArchitectures: [cdk.aws_lambda.Architecture.ARM_64],
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-    });
+    })
 
     const _customPythonLambda = new CustomPythonFunction(
       this,
@@ -96,7 +96,7 @@ export class LambdaConstruct extends Construct {
           API_BASE_URL: "https://pokeapi.co",
         },
         layers: [pythonLayer],
-      }
-    );
+      },
+    )
   }
 }
