@@ -1,6 +1,6 @@
-import boto3
-import botocore
 import os
+
+import boto3
 import requests
 
 try:
@@ -13,17 +13,17 @@ except ImportError:
 
 sqs_client = boto3.client("sqs")
 
-QUEUE_URL = os.getenv('QUEUE_URL')
-API_BASE_URL = os.getenv('API_BASE_URL')
+QUEUE_URL = os.getenv("QUEUE_URL")
+API_BASE_URL = os.getenv("API_BASE_URL")
 
 
 def get_waza_name(machine_id: str) -> str:
     """
     Get the name of the Waza (skill) being executed.
     """
-    response = requests.get(f'{API_BASE_URL}/api/v2/machine/{machine_id}')
+    response = requests.get(f"{API_BASE_URL}/api/v2/machine/{machine_id}")
 
-    return response.json().get('move').get('name', 'Unknown Waza Name')
+    return response.json().get("move").get("name", "Unknown Waza Name")
 
 
 def lambda_handler(event, context) -> list:
@@ -32,18 +32,22 @@ def lambda_handler(event, context) -> list:
         AttributeNames=[
             "ApproximateNumberOfMessages",
             "ApproximateNumberOfMessagesNotVisible",
-            "ApproximateNumberOfMessagesDelayed"
-        ]
+            "ApproximateNumberOfMessagesDelayed",
+        ],
     )
-    
-    if(sqs_attribute['Attributes']['ApproximateNumberOfMessages'] == '0'):
+
+    if sqs_attribute["Attributes"]["ApproximateNumberOfMessages"] == "0":
         return []
-    
+
     sqs_messages = sqs_client.receive_message(
         QueueUrl=QUEUE_URL,
         MaxNumberOfMessages=10,
     )
-    
-    result = map(lambda message: {'waza_name': get_waza_name(message['Body']), 'timestamp': get_now().isoformat()}, sqs_messages.get('Messages', []))
-    
+
+    result = map(
+        lambda message: {"waza_name": get_waza_name(
+            message["Body"]), "timestamp": get_now().isoformat()},
+        sqs_messages.get("Messages", []),
+    )
+
     return list(result)
