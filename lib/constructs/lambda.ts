@@ -1,4 +1,7 @@
-import { PythonLayerVersion } from "@aws-cdk/aws-lambda-python-alpha"
+import {
+  PythonFunction,
+  PythonLayerVersion,
+} from "@aws-cdk/aws-lambda-python-alpha"
 import * as cdk from "aws-cdk-lib"
 import {
   aws_iam as iam,
@@ -98,5 +101,24 @@ export class LambdaConstruct extends Construct {
         layers: [pythonLayer],
       },
     )
+
+    const _pythonLambda = new PythonFunction(this, "python-lambda", {
+      functionName: "python-lambda",
+      entry: "src/function/recieve_sqs_message",
+      runtime: lambda.Runtime.PYTHON_3_13,
+      bundling: { assetExcludes: ["__pycache__", "test"] },
+      handler: "lambda_handler",
+      tracing: lambda.Tracing.ACTIVE,
+      retryAttempts: 0,
+      architecture: lambda.Architecture.ARM_64,
+      role: lambdaRole,
+      memorySize: 128,
+      timeout: cdk.Duration.seconds(10),
+      environment: {
+        QUEUE_URL: sampleQueue.queueUrl,
+        API_BASE_URL: "https://pokeapi.co",
+      },
+      layers: [pythonLayer],
+    })
   }
 }
