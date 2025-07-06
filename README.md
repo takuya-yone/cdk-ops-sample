@@ -13,6 +13,14 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 - `pnpm cdk diff` compare deployed stack with current state
 - `pnpm cdk synth` emits the synthesized CloudFormation template
 
+## At first
+
+```bash
+pnpm install
+uv sync
+pnpm ecr:login
+```
+
 ## How to synth
 
 ```bash
@@ -27,6 +35,20 @@ pnpm ecr:login
 pnpm cdk deploy
 ```
 
+## Unit test
+
+#### Python
+
+```bash
+pnpm py:test
+```
+
+#### TypeScript
+
+```bash
+pnpm ts:test
+```
+
 ## cfn-guard
 
 #### rulegen
@@ -39,8 +61,27 @@ cfn-guard rulegen --template cfn-guard/rules/vpc-enable-dns/template.yml --outpu
 #### validate synth result
 
 ```bash
-pnpm ecr:login
 npx cdk synth | cfn-guard validate --rules cfn-guard/rules
+```
+
+## lint check
+
+```bash
+pnpm check
+```
+
+## auto format
+
+#### Python
+
+```bash
+pnpm py:fix
+```
+
+#### TypeScript
+
+```bash
+pnpm ts:fix
 ```
 
 ## Memo
