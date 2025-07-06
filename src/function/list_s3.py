@@ -2,9 +2,9 @@ import boto3
 import botocore
 
 try:
-    from layer.utils.date_utils import get_now
+    from layer.python_layer.date_utils import get_now
 except ImportError:
-    from src.layer.utils.date_utils import get_now
+    from src.layer.python_layer.date_utils import get_now
 
 
 s3_client = boto3.client("s3")
