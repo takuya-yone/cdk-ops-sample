@@ -14,6 +14,20 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 * `pnpm cdk synth`   emits the synthesized CloudFormation template
 
 
+## How to synth
+
+```bash
+pnpm ecr:login
+pnpm cdk synth
+```
+
+## How to deploy
+
+```bash
+pnpm ecr:login
+pnpm cdk deploy
+```
+
 ## cfn-guard
 
 #### rulegen
@@ -24,5 +38,6 @@ cfn-guard rulegen --template cfn-guard/rules/vpc-enable-dns/template.yml --outpu
 
 #### validate synth result
 ```bash
+pnpm ecr:login
 npx cdk synth | cfn-guard validate --rules cfn-guard/rules
 ```

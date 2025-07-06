@@ -2,7 +2,7 @@ import boto3
 import botocore
 
 try:
-    from layer.python_layer.date_utils import get_now
+    from date_utils import get_now
 except ImportError:
     from src.layer.python_layer.date_utils import get_now
 

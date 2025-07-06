@@ -6,7 +6,7 @@ def test_lambda_handler(mocker, create_s3_bucket):
     """
     handlerのテスト
     """
-    from src.function.list_s3 import lambda_handler
+    from src.function.recieve_sqs_message.index import lambda_handler
 
     res = lambda_handler({}, {})
 

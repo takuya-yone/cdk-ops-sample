@@ -13,7 +13,8 @@
     "pytest": "uv run pytest -vv -s tests",
     "py:fix": "./python_fix.sh",
     "ts:fix": "biome check lib src tests --write",
-    "jest:cov": "jest --coverage"
+    "jest:cov": "jest --coverage",
+    "ecr:login": "aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws"
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.6",
