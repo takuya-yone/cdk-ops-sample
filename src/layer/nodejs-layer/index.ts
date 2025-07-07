@@ -1,1 +1,1 @@
-export { getDate } from "./date-utils"
+export { getNow } from "./date-utils"

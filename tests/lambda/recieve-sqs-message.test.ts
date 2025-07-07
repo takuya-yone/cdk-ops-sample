@@ -17,8 +17,8 @@ const fetchWazaNameSpyOn = jest
   .spyOn(mainTs, "fetchWazaName")
   .mockResolvedValue("mock-waza-name")
 // 特定メソッドのモック化
-const getDateSpyOn = jest
-  .spyOn(dateUtils, "getDate")
+const getNowSpyOn = jest
+  .spyOn(dateUtils, "getNow")
   .mockReturnValue(new Date(2000, 0, 1))
 
 describe("recieve-sqs-message.ts w/ mock", () => {
@@ -29,7 +29,7 @@ describe("recieve-sqs-message.ts w/ mock", () => {
   // テスト完了後、モック化したメソッドの復元
   afterAll(() => {
     fetchWazaNameSpyOn.mockRestore()
-    getDateSpyOn.mockRestore()
+    getNowSpyOn.mockRestore()
   })
 
   it("w/ 0 sqs message", async () => {

@@ -1,3 +1,3 @@
-export const getDate = (): Date => {
+export const getNow = (): Date => {
   return new Date()
 }

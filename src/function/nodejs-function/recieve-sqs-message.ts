@@ -7,8 +7,8 @@ import {
   SQSClient,
 } from "@aws-sdk/client-sqs"
 
-// Importing the getDate function from the nodejs-layer
-import { getDate } from "nodejs-layer"
+// Importing the getNow function from the nodejs-layer
+import { getNow } from "nodejs-layer"
 
 const sqsClient = new SQSClient({
   maxAttempts: 3,
@@ -73,14 +73,14 @@ export const lambdaHandler = async (): Promise<LambdaResponse> => {
   // SQSメッセージの受信
   const sqsMessage = await sqsClient.send(sqsRecieveMessageCommand)
   if (!sqsMessage.Messages || sqsMessage.Messages.length === 0) {
-    logger.info(getDate().toISOString())
+    logger.info(getNow().toISOString())
     return []
   }
 
   const result: LambdaResponse = await Promise.all(
     sqsMessage.Messages.map(async (message) => {
       const wazaName = await fetchWazaName(message.Body ?? "no body")
-      return { wazaName: wazaName, timestamp: getDate().toISOString() }
+      return { wazaName: wazaName, timestamp: getNow().toISOString() }
     }),
   )
 
