@@ -1,4 +1,10 @@
+import importlib
+import sys
+
 from moto import mock_aws
+
+sys.modules["date_utils"] = importlib.import_module(
+    "src.layer.python_layer.date_utils")
 
 
 class TestWithMock:

@@ -3,14 +3,7 @@ import os
 import boto3
 import requests
 from aws_lambda_powertools import Logger, Tracer
-
-try:
-    # Lambdaデプロイ時のパス
-    from date_utils import get_now
-except ImportError:
-    # ローカル実行時のパス
-    from src.layer.python_layer.date_utils import get_now
-
+from date_utils import get_now
 
 sqs_client = boto3.client("sqs")
 
