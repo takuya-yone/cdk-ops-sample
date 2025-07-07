@@ -77,7 +77,7 @@ export class LambdaConstruct extends Construct {
       layers: [nodejsLayer],
     })
 
-    const pythonLayer = new PythonLayerVersion(this, "LambdaCustomLayer", {
+    const pythonLayer = new PythonLayerVersion(this, "SamplePythonLayer", {
       entry: "src/layer/python_layer",
       layerVersionName: "SamplePythonLayer",
       compatibleRuntimes: [lambda.Runtime.PYTHON_3_13],
