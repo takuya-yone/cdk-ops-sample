@@ -13,6 +13,13 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 - `pnpm cdk diff` compare deployed stack with current state
 - `pnpm cdk synth` emits the synthesized CloudFormation template
 
+## About CDK Project
+
+- `cfn-guard` cfn-guard の定義
+- `lib` AWS リソースの定義
+- `src` アプリケーションコード
+- `tests` テストコード置き場
+
 ## At first
 
 ```bash
