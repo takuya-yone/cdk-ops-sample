@@ -85,6 +85,12 @@ export class LambdaConstruct extends Construct {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     })
 
+    const pythonPowertoolsLayer = lambda.LayerVersion.fromLayerVersionArn(
+      this,
+      "PythonPowertoolsLayer",
+      "arn:aws:lambda:ap-northeast-1:017000801446:layer:AWSLambdaPowertoolsPythonV3-python313-arm64:18",
+    )
+
     const _customPythonLambda = new CustomPythonFunction(
       this,
       "custom-python-lambda",
@@ -98,7 +104,7 @@ export class LambdaConstruct extends Construct {
           QUEUE_URL: sampleQueue.queueUrl,
           API_BASE_URL: "https://pokeapi.co",
         },
-        layers: [pythonLayer],
+        layers: [pythonLayer, pythonPowertoolsLayer],
       },
     )
 
@@ -118,7 +124,7 @@ export class LambdaConstruct extends Construct {
         QUEUE_URL: sampleQueue.queueUrl,
         API_BASE_URL: "https://pokeapi.co",
       },
-      layers: [pythonLayer],
+      layers: [pythonLayer, pythonPowertoolsLayer],
     })
   }
 }

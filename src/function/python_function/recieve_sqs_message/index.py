@@ -2,6 +2,7 @@ import os
 
 import boto3
 import requests
+from aws_lambda_powertools import Logger, Tracer
 
 try:
     # Lambdaデプロイ時のパス
@@ -16,7 +17,11 @@ sqs_client = boto3.client("sqs")
 QUEUE_URL = os.getenv("QUEUE_URL")
 API_BASE_URL = os.getenv("API_BASE_URL")
 
+logger = Logger()
+tracer = Tracer()
 
+
+@tracer.capture_method
 def get_waza_name(machine_id: str) -> str:
     """
     Get the name of the Waza (skill) being executed.
@@ -26,6 +31,7 @@ def get_waza_name(machine_id: str) -> str:
     return response.json().get("move").get("name", "Unknown Waza Name")
 
 
+@tracer.capture_lambda_handler
 def lambda_handler(event, context) -> list:
     sqs_attribute = sqs_client.get_queue_attributes(
         QueueUrl=QUEUE_URL,
@@ -37,6 +43,7 @@ def lambda_handler(event, context) -> list:
     )
 
     if sqs_attribute["Attributes"]["ApproximateNumberOfMessages"] == "0":
+        logger.info(f"No messages in the queue.: {get_now().isoformat()}")
         return []
 
     sqs_messages = sqs_client.receive_message(
