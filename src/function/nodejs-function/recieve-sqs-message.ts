@@ -25,10 +25,6 @@ type LambdaResponse = {
   timestamp: string
 }[]
 
-// export const getDate = (): Date => {
-//   return new Date()
-// }
-
 export const fetchWazaName = async (machineId: string): Promise<string> => {
   const response = await fetch(
     `${process.env.API_BASE_URL}/api/v2/machine/${machineId}`,
